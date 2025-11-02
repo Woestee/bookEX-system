@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}">  {{ item.item }} </a>
+      </li>
+   {% endfor %}
+{% endblock sidenav %}
+
+{% block content %}
+<h1>Book Detail</h1>
+
+<table border="2" width="100%">
+   <tr>
+      <th>Book Picture</th>
+      <th>Book Name</th>
+      <th>Book Price</th>
+      <th>User Name</th>
+      <th>Book Post Date</th>
+      <th>Book Web</th>
+      <th>Average Rating</th>
+      <th>User Ratings</th>
+      <th>User Comments</th>
+   </tr>
+
+   <tr valign="top">
+      <td><img src="{% static book.pic_path %}" width="100" /></td>
+      <td>{{ book.name }}</td>
+      <td>{{ book.price }}</td>
+      <td>{{ book.username }}</td>
+      <td>{{ book.publishdate }}</td>
+      <td><a href="{{ book.web }}" target="_blank">{{ book.web }}</a></td>
+
+      <!-- Average Rating -->
+      <td>
+         {% if avg_rating %}
+            {{ avg_rating|floatformat:1 }} / 5
+         {% else %}
+            No ratings yet
+         {% endif %}
+      </td>
+
+      <!-- User Ratings -->
+      <td>
+           {% if ratings %}
+              <ul style="margin:0; padding-left:15px;">
+                 {% for r in ratings %}
+                    <li>
+                       <strong>{{ r.user.username }}</strong>: {{ r.value }}/5
+                       {% if user.is_authenticated and user == r.user or user.is_superuser %}
+                          <a href="{% url 'delete_rating' r.id %}"
+                             onclick="return confirm('Delete this rating?');"
+                             style="color:red; margin-left:5px;">Delete</a>
+                       {% endif %}
+                    </li>
+                 {% endfor %}
+              </ul>
+           {% else %}
+              <em>No ratings yet</em>
+           {% endif %}
+      </td>
+
+      <!-- User Comments -->
+      <td>
+           {% if comments %}
+              <ul style="margin:0; padding-left:15px;">
+                 {% for c in comments %}
+                    <li>
+                       <strong>{{ c.user.username }}</strong> ({{ c.created_at|date:"M d, Y H:i" }}):<br>
+                       {{ c.text }}
+                       {% if user.is_authenticated and user == c.user or user.is_superuser %}
+                          <a href="{% url 'delete_comment' c.id %}"
+                             onclick="return confirm('Delete this comment?');"
+                             style="color:red; margin-left:5px;">Delete</a>
+                       {% endif %}
+                    </li>
+                 {% endfor %}
+              </ul>
+           {% else %}
+              <em>No comments yet</em>
+           {% endif %}
+      </td>
+
+</table>
+
+{% endblock content %}

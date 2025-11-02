@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>Add a Comment for: {{ book.name }}</h2>
+
+  <form method="POST" action="">
+    {% csrf_token %} <div>
+      <label for="comment_text">Your Comment:</label><br>
+      <textarea id="comment_text" name="comment_text" rows="5" cols="60" required></textarea>
+    </div>
+
+    <br>
+    
+    <div>
+      <button type="submit">Submit Comment</button>
+    </div>
+  </form>
+
+{% endblock %}

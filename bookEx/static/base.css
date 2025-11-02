@@ -1,0 +1,112 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Layout */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Header (Banner) */
+header {
+    background: #333;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.banner h1 {
+    margin: 0;
+}
+
+/* Container for Sidebar and Content */
+.container {
+    display: flex;
+    min-height: 80vh;
+    padding: 20px;
+}
+
+/* Sidebar (Main Menu) */
+.sidebar {
+    width: 200px;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Main Content */
+.content {
+    flex-grow: 1;
+    margin-left: 20px;
+}
+
+.content section {
+    margin-bottom: 20px;
+}
+
+.content h2 {
+    color: #333;
+}
+
+.content p {
+    font-size: 1.1em;
+    line-height: 1.6;
+}
+
+/* Footer */
+footer {
+    background: #333;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}
+
+footer p {
+    font-size: 14px;
+}
+
+/* Add this code to the end of static/base.css */
+
+.btn {
+  display: inline-block;
+  padding: 6px 12px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  color: #333;
+  background-color: #f0f0f0;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #e0e0e0;
+}
