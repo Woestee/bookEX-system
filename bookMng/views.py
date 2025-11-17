@@ -13,6 +13,12 @@ from .models import Book, Comment, Rating
 from django.views.generic.edit import CreateView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
+
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+
+from django.db.models import Avg, Max
 # Create your views here.
 # Create your views here.
 
@@ -26,21 +32,45 @@ def index(request):
 
 def postbook(request):
     submitted = False
+
     if request.method == 'POST':
         form = BookForm(request.POST, request.FILES)
         if form.is_valid():
-            #form.save()
             book = form.save(commit=False)
+
+            # Associate book with logged-in user (if any)
             try:
                 book.username = request.user
             except Exception:
                 pass
+
             book.save()
+
+            # ----- OPTIONAL COMMENT -----
+            comment_text = form.cleaned_data.get('comment_text')
+            if comment_text and request.user.is_authenticated:
+                Comment.objects.create(
+                    book=book,
+                    user=request.user,
+                    text=comment_text
+                )
+
+            # ----- OPTIONAL RATING -----
+            rating_value = form.cleaned_data.get('rating_value')
+            if rating_value and request.user.is_authenticated:
+                Rating.objects.update_or_create(
+                    book=book,
+                    user=request.user,
+                    defaults={'value': rating_value}
+                )
+
             return HttpResponseRedirect('/postbook?submitted=True')
+
     else:
         form = BookForm()
         if 'submitted' in request.GET:
             submitted = True
+
     return render(request,
                   'bookMng/postbook.html',
                   {
@@ -50,9 +80,16 @@ def postbook(request):
                   })
 
 def displaybooks(request):
-    books = Book.objects.all()
+    books = Book.objects.all().annotate(
+        avg_rating=Avg('ratings__value'),
+        latest_comment_time=Max('comments__created_at')
+    )
+
+    # Attach the actual latest comment object
     for b in books:
         b.pic_path = b.picture.url[14:]
+        b.latest_comment = b.comments.order_by('-created_at').first()
+
     return render(request,
                   'bookMng/displaybooks.html',
                   {

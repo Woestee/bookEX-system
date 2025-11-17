@@ -14,23 +14,15 @@
    <h1>Display Books</h1>
    <table border="2" >
 
-             <tr>
-          <th>
-              Book Name
-          </th>
-          <th>
-              Book Price
-          </th>
-          <th>
-              User Name
-          </th>
-          <th>
-              Comments
-          </th>
-          <th>
-              Rate
-          </th>
-      </tr>
+       <tr>
+           <th>Book Name</th>
+           <th>Book Price</th>
+           <th>User Name</th>
+           <th>Latest Comment</th>
+           <th>Average Rating</th>
+           <th>Comment</th>
+           <th>Rate</th>
+       </tr>
 
    {% for book in books %}
       <tr>
@@ -43,6 +35,24 @@
           <td>
             {{ book.username }}
          </td>
+
+          <td>
+            {% if book.latest_comment %}
+                <strong>{{ book.latest_comment.user.username }}</strong>:<br>
+                {{ book.latest_comment.text|truncatechars:50 }}<br>
+                <small>{{ book.latest_comment.created_at|timesince }} ago</small>
+            {% else %}
+                <em>No comments yet</em>
+            {% endif %}
+          </td>
+
+        <td>
+            {% if book.avg_rating %}
+                {{ book.avg_rating|floatformat:1 }} / 5
+            {% else %}
+                No ratings
+            {% endif %}
+        </td>
 
           <td>
         <a href="{% url 'add_comment' book.id %}" class="btn">Comment</a>

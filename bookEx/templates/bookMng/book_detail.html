@@ -82,7 +82,37 @@
               <em>No comments yet</em>
            {% endif %}
       </td>
+    <tr>
+        <td colspan="9" style="text-align:center; padding: 15px;">
 
+            {% if user.is_authenticated %}
+
+                <a href="{% url 'add_comment' book.id %}"
+                   style="background:#2b78e4; color:white; padding:8px 15px;
+                          margin-right:10px; border-radius:5px; text-decoration:none;">
+                   ➕ Add Comment
+                </a>
+
+                <a href="{% url 'add_rating' book.id %}"
+                   style="background:#34a853; color:white; padding:8px 15px;
+                          border-radius:5px; text-decoration:none;">
+                   ⭐ Add Rating
+                </a>
+
+            {% else %}
+
+                <p style="color:red; font-weight:bold;">
+                    Please
+                    <a href="/login/?next={% url 'book_detail' book.id %}">
+                        log in
+                    </a>
+                    to add comments or ratings.
+                </p>
+
+            {% endif %}
+
+        </td>
+    </tr>
 </table>
 
 {% endblock content %}
