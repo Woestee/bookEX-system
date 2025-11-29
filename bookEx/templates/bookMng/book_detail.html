@@ -48,12 +48,16 @@
               <ul style="margin:0; padding-left:15px;">
                  {% for r in ratings %}
                     <li>
-                       <strong>{{ r.user.username }}</strong>: {{ r.value }}/5
-                       {% if user.is_authenticated and user == r.user or user.is_superuser %}
-                          <a href="{% url 'delete_rating' r.id %}"
-                             onclick="return confirm('Delete this rating?');"
-                             style="color:red; margin-left:5px;">Delete</a>
-                       {% endif %}
+                        <strong>{{ r.user.username }}</strong>: {{ r.value }}/5
+
+                        {% if user.is_authenticated and user == r.user %}
+                            <br>
+                            <a href="{% url 'delete_rating' r.id %}"
+                               onclick="return confirm('Delete this rating?');"
+                               style="color:red; font-size:0.9em;">
+                               Delete
+                            </a>
+                        {% endif %}
                     </li>
                  {% endfor %}
               </ul>
@@ -68,13 +72,18 @@
               <ul style="margin:0; padding-left:15px;">
                  {% for c in comments %}
                     <li>
-                       <strong>{{ c.user.username }}</strong> ({{ c.created_at|date:"M d, Y H:i" }}):<br>
-                       {{ c.text }}
-                       {% if user.is_authenticated and user == c.user or user.is_superuser %}
-                          <a href="{% url 'delete_comment' c.id %}"
-                             onclick="return confirm('Delete this comment?');"
-                             style="color:red; margin-left:5px;">Delete</a>
-                       {% endif %}
+                        <strong>{{ c.user.username }}</strong>
+                        ({{ c.created_at|date:"M d, Y H:i" }}):<br>
+                        {{ c.text }}
+
+                        {% if user.is_authenticated and user == c.user %}
+                            <br>
+                            <a href="{% url 'delete_comment' c.id %}"
+                               onclick="return confirm('Delete this comment?');"
+                               style="color:red; font-size:0.9em;">
+                               Delete
+                            </a>
+                        {% endif %}
                     </li>
                  {% endfor %}
               </ul>

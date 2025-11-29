@@ -204,7 +204,7 @@ from django.contrib import messages
 def delete_comment(request, comment_id):
     comment = get_object_or_404(Comment, id=comment_id)
 
-    # Only the user who made the comment or a superuser can delete
+    # Only allow the owner (or superuser) to delete
     if request.user == comment.user or request.user.is_superuser:
         comment.delete()
         messages.success(request, "Comment deleted successfully.")

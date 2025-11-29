@@ -43,6 +43,16 @@
  <main class="content">
   <main class="content">
             {% block content %}
+            {% if messages %}
+                <div style="margin-bottom: 15px;">
+                    {% for message in messages %}
+                        <p style="color: {% if message.tags == 'error' %}red{% else %}green{% endif %};
+                                  font-weight: bold;">
+                            {{ message }}
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endif %}
                <h1>Main Content</h1>
             {% endblock content %}
  </main>
