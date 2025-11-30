@@ -19,20 +19,10 @@
           </tr>
       </table>
         <p>
-            Don’t have an account?
-            <a href="{% url 'register' %}">Create one here</a>
+            To register
         </p>
 
       <input type="hidden" name="next" value="{{ next }}" />
       {% csrf_token %}
      </form>
-
-{% if form.errors %}
-   <p style="color:red;">Invalid login, please try again.</p>
-{% endif %}
-
-{% if next %}
-   <p style="color:red;">Please log in to continue.</p>
-{% endif %}
-
 {% endblock content %}

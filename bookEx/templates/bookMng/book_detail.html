@@ -4,124 +4,145 @@
 {% block sidenav %}
    {% for item in item_list %}
       <li>
-        <a href="{{ item.link }}">  {{ item.item }} </a>
+        <a href="{{ item.link }}">{{ item.item }}</a>
       </li>
    {% endfor %}
+
+   {% if user.is_authenticated %}
+      <li><a href="{% url 'favorites_list' %}">My Favorites</a></li>
+   {% else %}
+      <li>You must be logged in</li>
+   {% endif %}
 {% endblock sidenav %}
+
 
 {% block content %}
 <h1>Book Detail</h1>
 
-<table border="2" width="100%">
-   <tr>
-      <th>Book Picture</th>
-      <th>Book Name</th>
-      <th>Book Price</th>
-      <th>User Name</th>
-      <th>Book Post Date</th>
-      <th>Book Web</th>
-      <th>Average Rating</th>
-      <th>User Ratings</th>
-      <th>User Comments</th>
-   </tr>
+{# Flash messages #}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert
+            {% if message.tags == 'success' %} alert-success
+            {% elif message.tags == 'error' %} alert-error
+            {% else %} alert-info
+            {% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
 
-   <tr valign="top">
-      <td><img src="{% static book.pic_path %}" width="100" /></td>
-      <td>{{ book.name }}</td>
-      <td>{{ book.price }}</td>
-      <td>{{ book.username }}</td>
-      <td>{{ book.publishdate }}</td>
-      <td><a href="{{ book.web }}" target="_blank">{{ book.web }}</a></td>
+<div class="book-detail">
+    <div class="book-detail-main">
+        <div class="book-cover">
+            <img src="{% static book.pic_path %}" alt="{{ book.name }}">
+        </div>
 
-      <!-- Average Rating -->
-      <td>
-         {% if avg_rating %}
-            {{ avg_rating|floatformat:1 }} / 5
-         {% else %}
-            No ratings yet
-         {% endif %}
-      </td>
+        <div class="book-main-info">
+            <h2 class="book-detail-title">{{ book.name }}</h2>
 
-      <!-- User Ratings -->
-      <td>
-           {% if ratings %}
-              <ul style="margin:0; padding-left:15px;">
-                 {% for r in ratings %}
-                    <li>
-                        <strong>{{ r.user.username }}</strong>: {{ r.value }}/5
+            <div class="book-detail-meta">
+                <span class="tag">Price: ${{ book.price }}</span>
+                <span class="tag">Posted by: {{ book.username }}</span>
+                <span class="tag">Posted on: {{ book.publishdate }}</span>
+            </div>
 
-                        {% if user.is_authenticated and user == r.user %}
-                            <br>
-                            <a href="{% url 'delete_rating' r.id %}"
-                               onclick="return confirm('Delete this rating?');"
-                               style="color:red; font-size:0.9em;">
-                               Delete
-                            </a>
-                        {% endif %}
-                    </li>
-                 {% endfor %}
-              </ul>
-           {% else %}
-              <em>No ratings yet</em>
-           {% endif %}
-      </td>
+            <p class="book-detail-link">
+                <strong>Website:</strong>
+                <a href="{{ book.web }}" target="_blank">{{ book.web }}</a>
+            </p>
 
-      <!-- User Comments -->
-      <td>
-           {% if comments %}
-              <ul style="margin:0; padding-left:15px;">
-                 {% for c in comments %}
-                    <li>
-                        <strong>{{ c.user.username }}</strong>
-                        ({{ c.created_at|date:"M d, Y H:i" }}):<br>
-                        {{ c.text }}
+            <div class="book-detail-rating-summary">
+                {% if avg_rating %}
+                    <span class="rating-badge">
+                        ⭐ {{ avg_rating|floatformat:1 }} / 5
+                    </span>
+                {% else %}
+                    <span class="rating-badge rating-empty">
+                        No ratings yet
+                    </span>
+                {% endif %}
+            </div>
 
-                        {% if user.is_authenticated and user == c.user %}
-                            <br>
-                            <a href="{% url 'delete_comment' c.id %}"
-                               onclick="return confirm('Delete this comment?');"
-                               style="color:red; font-size:0.9em;">
-                               Delete
-                            </a>
-                        {% endif %}
-                    </li>
-                 {% endfor %}
-              </ul>
-           {% else %}
-              <em>No comments yet</em>
-           {% endif %}
-      </td>
-    <tr>
-        <td colspan="9" style="text-align:center; padding: 15px;">
+            <div class="book-detail-actions">
+                <a href="{% url 'add_comment' book.id %}" class="btn btn-outline">Add Comment</a>
+                <a href="{% url 'add_rating' book.id %}" class="btn btn-outline">Rate Book</a>
 
-            {% if user.is_authenticated %}
+                {% if user.is_authenticated %}
+                    {% if is_favorite %}
+                        <a href="{% url 'remove_from_favorites' book.id %}"
+                           class="btn btn-secondary">
+                            ❤️ Remove from Favorites
+                        </a>
+                    {% else %}
+                        <a href="{% url 'add_to_favorites' book.id %}"
+                           class="btn btn-primary">
+                            🤍 Add to Favorites
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <span class="book-detail-note">
+                        Please <a href="{% url 'login' %}?next={{ request.path }}">login</a>
+                        to add this book to favorites.
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
-                <a href="{% url 'add_comment' book.id %}"
-                   style="background:#2b78e4; color:white; padding:8px 15px;
-                          margin-right:10px; border-radius:5px; text-decoration:none;">
-                   ➕ Add Comment
-                </a>
-
-                <a href="{% url 'add_rating' book.id %}"
-                   style="background:#34a853; color:white; padding:8px 15px;
-                          border-radius:5px; text-decoration:none;">
-                   ⭐ Add Rating
-                </a>
-
+    <div class="book-detail-columns">
+        <div class="book-detail-column">
+            <h3>User Ratings</h3>
+            {% if ratings %}
+                <ul class="rating-list">
+                    {% for r in ratings %}
+                        <li>
+                            <div class="rating-line">
+                                <span><strong>{{ r.user.username }}</strong> rated {{ r.value }}/5</span>
+                                {% if user.is_authenticated and user == r.user or user.is_superuser %}
+                                    <a href="{% url 'delete_rating' r.id %}"
+                                       onclick="return confirm('Delete this rating?');"
+                                       class="link-danger">
+                                        Delete
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
             {% else %}
-
-                <p style="color:red; font-weight:bold;">
-                    Please
-                    <a href="/login/?next={% url 'book_detail' book.id %}">
-                        log in
-                    </a>
-                    to add comments or ratings.
-                </p>
-
+                <p><em>No ratings yet.</em></p>
             {% endif %}
-
-        </td>
-    </tr>
-</table>
-
+        </div>
+        <div class="book-detail-column">
+            <h3>User Comments</h3>
+            {% if comments %}
+                <ul class="comment-list">
+                    {% for c in comments %}
+                        <li>
+                            <div class="comment-header">
+                                <strong>{{ c.user.username }}</strong>
+                                <span class="comment-date">
+                                    {{ c.created_at|date:"M d, Y H:i" }}
+                                </span>
+                                {% if user.is_superuser or user.is_authenticated and user == r.user %}
+                                    <a href="{% url 'delete_comment' c.id %}"
+                                       onclick="return confirm('Delete this comment?');"
+                                       class="link-danger">
+                                        Delete
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="comment-body">
+                                {{ c.text }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p><em>No comments yet.</em></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock content %}

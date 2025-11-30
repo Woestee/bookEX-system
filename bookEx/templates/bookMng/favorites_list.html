@@ -15,14 +15,10 @@
    {% endif %}
 {% endblock sidenav %}
 
-{% block content %}
-    {% if not_logged_in %}
-    <p>You must be logged in to view your books.
-       <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
-    </p>
-{% endif %}
 
-   <h1>My Books</h1>
+{% block content %}
+   <h1>My Favorite Books</h1>
+
    <div class="book-list">
       {% for book in books %}
          <div class="book-card">
@@ -34,18 +30,16 @@
                 <strong>Price:</strong> ${{ book.price }}<br>
                 <strong>Posted by:</strong> {{ book.username }}
             </p>
+
             <div class="book-actions">
                 <a href="{% url 'book_detail' book.id %}" class="btn btn-outline">View</a>
-
-                <a href="{% url 'book_delete' book.id %}"
-                   class="btn btn-danger"
-                   onclick="return confirm('Delete this book?');">
-                   Delete
+                <a href="{% url 'remove_from_favorites' book.id %}" class="btn btn-secondary">
+                    Remove from Favorites
                 </a>
             </div>
          </div>
       {% empty %}
-         <p>You haven't posted any books yet.</p>
+         <p>You don’t have any favorite books yet.</p>
       {% endfor %}
    </div>
 {% endblock content %}
