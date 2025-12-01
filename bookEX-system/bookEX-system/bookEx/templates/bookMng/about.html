@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}">{{ item.item }}</a>
+      </li>
+   {% endfor %}
+
+   {# --- Add Favorites link here --- #}
+   {% if user.is_authenticated %}
+      <li><a href="{% url 'favorites_list' %}">My Favorites</a></li>
+   {% else %}
+      <li>You must be logged in</li>
+   {% endif %}
+{% endblock sidenav %}
+
+
+{% block content %}
+   <h1>About Us</h1>
+
+   <div class="row mt-4">
+       <div class="col-md-12">
+           <h3>Welcome to Our Book Management System</h3>
+           <p>
+               This is a comprehensive book management platform where users can:
+           </p>
+           <ul>
+               <li>Post and share books</li>
+               <li>Browse a collection of books from other users</li>
+               <li>Add comments and ratings to books</li>
+               <li>Save favorite books to a personal collection</li>
+               <li>Manage their own book listings</li>
+           </ul>
+       </div>
+   </div>
+
+   <div class="row mt-4">
+       <div class="col-md-12">
+           <h3>Our Mission</h3>
+           <p>
+               We aim to create a community of book lovers who can share their
+               favorite reads, discover new books, and connect through their
+               shared love of literature.
+           </p>
+       </div>
+   </div>
+
+   <div class="row mt-4">
+       <div class="col-md-12">
+           <h3>Features</h3>
+           <ul>
+               <li><strong>User Authentication:</strong> Secure login and registration system</li>
+               <li><strong>Book Posting:</strong> Share books with title, web link, price, and images</li>
+               <li><strong>Rating System:</strong> Rate books from 1 to 5 stars</li>
+               <li><strong>Comments:</strong> Leave and read comments on any book</li>
+               <li><strong>Favorites:</strong> Save books to your personal favorites list</li>
+               <li><strong>My Books:</strong> Manage your own posted books</li>
+           </ul>
+       </div>
+   </div>
+
+   <div class="row mt-4 mb-5">
+       <div class="col-md-12">
+           <h3>Get Started</h3>
+           <p>
+               {% if user.is_authenticated %}
+                   Welcome back, {{ user.username }}! Start exploring books or post your own.
+               {% else %}
+                   <a href="{% url 'register' %}">Register</a> or
+                   <a href="{% url 'login' %}">Login</a> to get started!
+               {% endif %}
+           </p>
+       </div>
+   </div>
+{% endblock content %}

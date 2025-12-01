@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}">{{ item.item }}</a>
+      </li>
+   {% endfor %}
+
+   {% if user.is_authenticated %}
+      <li><a href="{% url 'favorites_list' %}">My Favorites</a></li>
+   {% else %}
+      <li>You must be logged in</li>
+   {% endif %}
+{% endblock sidenav %}
+
+
+{% block content %}
+<h1>Book Detail</h1>
+
+{# Flash messages #}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert
+            {% if message.tags == 'success' %} alert-success
+            {% elif message.tags == 'error' %} alert-error
+            {% else %} alert-info
+            {% endif %}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="book-detail">
+    <div class="book-detail-main">
+        <div class="book-cover">
+            <img src="{% static book.pic_path %}" alt="{{ book.name }}">
+        </div>
+
+        <div class="book-main-info">
+            <h2 class="book-detail-title">{{ book.name }}</h2>
+
+            <div class="book-detail-meta">
+                <span class="tag">Price: ${{ book.price }}</span>
+                <span class="tag">Posted by: {{ book.username }}</span>
+                <span class="tag">Posted on: {{ book.publishdate }}</span>
+            </div>
+
+            <p class="book-detail-link">
+                <strong>Website:</strong>
+                <a href="{{ book.web }}" target="_blank">{{ book.web }}</a>
+            </p>
+
+            <div class="book-detail-rating-summary">
+                {% if avg_rating %}
+                    <span class="rating-badge">
+                        ⭐ {{ avg_rating|floatformat:1 }} / 5
+                    </span>
+                {% else %}
+                    <span class="rating-badge rating-empty">
+                        No ratings yet
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="book-detail-actions">
+                <a href="{% url 'add_comment' book.id %}" class="btn btn-outline">Add Comment</a>
+                <a href="{% url 'add_rating' book.id %}" class="btn btn-outline">Rate Book</a>
+
+                {% if user.is_authenticated %}
+                    {% if is_favorite %}
+                        <a href="{% url 'remove_from_favorites' book.id %}"
+                           class="btn btn-secondary">
+                            ❤️ Remove from Favorites
+                        </a>
+                    {% else %}
+                        <a href="{% url 'add_to_favorites' book.id %}"
+                           class="btn btn-primary">
+                            🤍 Add to Favorites
+                        </a>
+                    {% endif %}
+                {% else %}
+                    <span class="book-detail-note">
+                        Please <a href="{% url 'login' %}?next={{ request.path }}">login</a>
+                        to add this book to favorites.
+                    </span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="book-detail-columns">
+        <div class="book-detail-column">
+            <h3>User Ratings</h3>
+            {% if ratings %}
+                <ul class="rating-list">
+                    {% for r in ratings %}
+                        <li>
+                            <div class="rating-line">
+                                <span><strong>{{ r.user.username }}</strong> rated {{ r.value }}/5</span>
+                                {% if user.is_authenticated and user == r.user or user.is_superuser %}
+                                    <a href="{% url 'delete_rating' r.id %}"
+                                       onclick="return confirm('Delete this rating?');"
+                                       class="link-danger">
+                                        Delete
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p><em>No ratings yet.</em></p>
+            {% endif %}
+        </div>
+        <div class="book-detail-column">
+            <h3>User Comments</h3>
+            {% if comments %}
+                <ul class="comment-list">
+                    {% for c in comments %}
+                        <li>
+                            <div class="comment-header">
+                                <strong>{{ c.user.username }}</strong>
+                                <span class="comment-date">
+                                    {{ c.created_at|date:"M d, Y H:i" }}
+                                </span>
+                                {% if user.is_superuser or user.is_authenticated and user == r.user %}
+                                    <a href="{% url 'delete_comment' c.id %}"
+                                       onclick="return confirm('Delete this comment?');"
+                                       class="link-danger">
+                                        Delete
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="comment-body">
+                                {{ c.text }}
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p><em>No comments yet.</em></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

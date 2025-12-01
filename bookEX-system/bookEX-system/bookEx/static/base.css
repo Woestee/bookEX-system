@@ -1,0 +1,454 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and Layout */
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    background-color: #f5f5f7;
+    color: #222;
+}
+
+/* Header (Banner wrapper) */
+header {
+    padding: 0;
+}
+
+/* Banner */
+.banner {
+    background: linear-gradient(135deg, #3b82f6, #6366f1);
+    color: #fff;
+    padding: 16px 24px;
+}
+
+.banner h1 {
+    margin: 0;
+    font-size: 1.6rem;
+    letter-spacing: 0.03em;
+}
+
+/* Container for Sidebar and Content */
+.container {
+    display: flex;
+    max-width: 1100px;
+    margin: 24px auto 40px auto;
+    gap: 24px;
+    padding: 0 16px;
+    min-height: 70vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 16px 0;
+    flex-shrink: 0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.sidebar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.sidebar li {
+    margin: 0;
+}
+
+.sidebar a {
+    display: block;
+    padding: 10px 18px;
+    text-decoration: none;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+.sidebar a:hover {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+/* Main Content */
+.content {
+    flex: 1;
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 24px 24px 32px 24px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.content h1, .content h2 {
+    margin-bottom: 12px;
+}
+
+/* Hero section */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.hero-text {
+    max-width: 60%;
+}
+
+.hero-title {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    color: #111827;
+}
+
+.hero-subtitle {
+    font-size: 1rem;
+    color: #4b5563;
+    margin-bottom: 20px;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        background-color 0.15s ease,
+        color 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.05s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background-color: #2563eb;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-secondary {
+    background-color: #10b981;
+    color: #ffffff;
+}
+
+.btn-secondary:hover {
+    background-color: #059669;
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: #2563eb;
+    border-color: #bfdbfe;
+}
+
+.btn-outline:hover {
+    background-color: #eff6ff;
+}
+
+/* Hero side stats */
+.hero-side {
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.hero-stat {
+    background-color: #f9fafb;
+    border-radius: 10px;
+    padding: 10px 14px;
+    text-align: center;
+    border: 1px solid #e5e7eb;
+}
+
+.hero-stat-number {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.hero-stat-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* Feature cards */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.feature-card {
+    background-color: #f9fafb;
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+}
+
+.feature-card h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+    color: #111827;
+}
+
+.feature-card p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #4b5563;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 16px 0 24px 0;
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+/* Book list cards(So that it looks good obvs.*/
+.book-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.book-card {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+.book-title {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+    color: #111827;
+}
+
+.book-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.book-title a:hover {
+    text-decoration: underline;
+}
+
+.book-meta {
+    margin-bottom: 12px;
+    color: #4b5563;
+}
+
+.book-actions .btn {
+    margin-right: 6px;
+}
+/* Alerts (messages) */
+.alert {
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 0.9rem;
+}
+.alert-success {
+    background-color: #dcfce7;
+    border: 1px solid #bbf7d0;
+    color: #166534;
+}
+.alert-error {
+    background-color: #fee2e2;
+    border: 1px solid #fecaca;
+    color: #991b1b;
+}
+.alert-info {
+    background-color: #e0f2fe;
+    border: 1px solid #bfdbfe;
+    color: #1e3a8a;
+}
+
+/* Book detail layout */
+.book-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.book-detail-main {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.book-cover img {
+    width: 140px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.book-main-info {
+    flex: 1;
+}
+
+.book-detail-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-size: 1.6rem;
+    color: #111827;
+}
+
+.book-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.tag {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 999px;
+    background-color: #f3f4f6;
+    font-size: 0.8rem;
+    color: #4b5563;
+}
+
+.book-detail-link {
+    margin-bottom: 10px;
+}
+
+.book-detail-link a {
+    color: #2563eb;
+}
+
+.book-detail-rating-summary {
+    margin-bottom: 14px;
+}
+
+.rating-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background-color: #fef3c7;
+    color: #92400e;
+    font-size: 0.85rem;
+}
+
+.rating-empty {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.book-detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    margin-top: 6px;
+}
+
+.book-detail-note {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+/* Ratings & comments columns */
+.book-detail-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.book-detail-column h3 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.rating-list,
+.comment-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.rating-list li,
+.comment-list li {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 8px;
+}
+
+.rating-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+}
+
+.comment-date {
+    font-size: 0.75rem;
+    color: #6b7280;
+}
+
+.comment-body {
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.link-danger {
+    color: #b91c1c;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+.link-danger:hover {
+    text-decoration: underline;
+}
+/* Danger button (for delete actions) */
+.btn-danger {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+
+.btn-danger:hover {
+    background-color: #b91c1c;
+}
+
+
+

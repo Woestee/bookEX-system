@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Layout with Banner, Menu, and Content</title>
+
+    <link rel="stylesheet" href="{% static 'base.css' %}?v=2" type="text/css">
+</head>
+<body>
+
+<header>
+    <span style="float: right;">
+        {% if user.is_authenticated %}
+           {{ user.username }}
+           <form action="{% url 'logout' %}?next=/" method="post" style="display:inline;">
+               {% csrf_token %}
+               <button type="submit">logout</button>
+           </form>
+        {% else %}
+           Not Logged in
+           <a href="{% url 'login' %}?next=/">login</a>
+        {% endif %}
+    </span>
+
+    <div class="banner">
+        <h1>My Website Banner</h1>
+    </div>
+</header>
+
+<div class="container">
+    <nav class="sidebar">
+        <ul>
+            {% block sidenav %}
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'displaybooks' %}">Browse Books</a></li>
+                <li><a href="{% url 'postbook' %}">Post Book</a></li>
+                <li><a href="{% url 'mybooks' %}">My Books</a></li>
+
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'favorites_list' %}">Favorites</a></li>
+                {% else %}
+                    <li>You must be logged in</li>
+                {% endif %}
+            {% endblock sidenav %}
+        </ul>
+    </nav>
+
+    <main class="content">
+        {% block content %}
+            <h1>Main Content</h1>
+        {% endblock content %}
+    </main>
+</div>
+
+<footer>
+    <p>&copy; 2025 My Web Layout</p>
+</footer>
+
+</body>
+</html>

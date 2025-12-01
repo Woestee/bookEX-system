@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}">{{ item.item }}</a>
+      </li>
+   {% endfor %}
+
+   {% if user.is_authenticated %}
+      <li><a href="{% url 'favorites_list' %}">My Favorites</a></li>
+   {% else %}
+      <li>You must be logged in</li>
+   {% endif %}
+{% endblock sidenav %}
+
+{% block content %}
+    {% if not_logged_in %}
+    <p>You must be logged in to view your books.
+       <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+    </p>
+{% endif %}
+
+   <h1>My Books</h1>
+   <div class="book-list">
+      {% for book in books %}
+         <div class="book-card">
+            <h3 class="book-title">
+               <a href="{% url 'book_detail' book.id %}">{{ book.name }}</a>
+            </h3>
+
+            <p class="book-meta">
+                <strong>Price:</strong> ${{ book.price }}<br>
+                <strong>Posted by:</strong> {{ book.username }}
+            </p>
+            <div class="book-actions">
+                <a href="{% url 'book_detail' book.id %}" class="btn btn-outline">View</a>
+
+                <a href="{% url 'book_delete' book.id %}"
+                   class="btn btn-danger"
+                   onclick="return confirm('Delete this book?');">
+                   Delete
+                </a>
+            </div>
+         </div>
+      {% empty %}
+         <p>You haven't posted any books yet.</p>
+      {% endfor %}
+   </div>
+{% endblock content %}
