@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+  <h2>Rate: {{ book.name }}</h2>
+
+  <form method="POST" action="">
+    {% csrf_token %} <div>
+      <label for="rating_value">Your Rating:</label>
+      <select id="rating_value" name="rating_value" required>
+        <option value="" disabled selected>Choose a rating...</option>
+        <option value="5">★★★★★ (5 Stars)</option>
+        <option value="4">★★★★☆ (4 Stars)</option>
+        <option value="3">★★★☆☆ (3 Stars)</option>
+        <option value="2">★★☆☆☆ (2 Stars)</option>
+        <option value="1">★☆☆☆☆ (1 Star)</option>
+      </select>
+    </div>
+    
+    <br>
+
+    <div>
+      <button type="submit">Submit Rating</button>
+    </div>
+  </form>
+
+{% endblock %}

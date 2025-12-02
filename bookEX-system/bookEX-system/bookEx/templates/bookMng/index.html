@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block sidenav %}
+   {% for item in item_list %}
+      <li>
+        <a href="{{ item.link }}">{{ item.item }}</a>
+      </li>
+   {% endfor %}
+
+   {% if user.is_authenticated %}
+      <li><a href="{% url 'favorites_list' %}">My Favorites</a></li>
+   {% else %}
+      <li>You must be logged in</li>
+   {% endif %}
+{% endblock sidenav %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-text">
+        <h1 class="hero-title">Welcome to the Book Exchange System</h1>
+
+        {% if user.is_authenticated %}
+            <p class="hero-subtitle">
+                Hi {{ user.username }}, discover new books, share your own, and keep track of your favourites.
+            </p>
+        {% else %}
+            <p class="hero-subtitle">
+                Discover, share, and manage books in a simple online library. Create an account to get started.
+            </p>
+        {% endif %}
+
+        <div class="hero-actions">
+            <a href="/displaybooks" class="btn btn-primary">Browse Books</a>
+            <a href="/postbook" class="btn btn-secondary">Post a Book</a>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'favorites_list' %}" class="btn btn-outline">My Favorites</a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-outline">Create an Account</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="hero-side">
+        <div class="hero-stat">
+            <span class="hero-stat-number">{{ books_count|default:"100+" }}</span>
+            <span class="hero-stat-label">Books shared</span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-stat-number">{{ users_count|default:"50+" }}</span>
+            <span class="hero-stat-label">Active users</span>
+        </div>
+    </div>
+</div>
+
+<div class="feature-grid">
+    <div class="feature-card">
+        <h3>Share Your Books</h3>
+        <p>Post books with title, price, web link, and images so others can discover them.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Rate & Comment</h3>
+        <p>Leave ratings and comments on books to help other readers find great content.</p>
+    </div>
+    <div class="feature-card">
+        <h3>Build Your Favorites</h3>
+        <p>Save books to your personal favorites list and access them quickly anytime.</p>
+    </div>
+</div>
+{% endblock content %}
